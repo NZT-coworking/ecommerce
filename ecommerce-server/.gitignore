@@ -3,3 +3,6 @@
 
 ## Ignore env
 .env
+
+## ignore yarn.lock
+yarn.lock
