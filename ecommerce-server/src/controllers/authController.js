@@ -15,11 +15,9 @@ const ownerRegister = async (req, res) => {
 const ownerLogin = async (req, res) => {
     try {
         const loginResponse = await authService.login(req.body);
-        console.log({loginResponse: loginResponse})
         return res.send(loginResponse);
     }
     catch (err) {
-        console.log(err)
         return res.status(400).send({ error: err })
     }
 };
