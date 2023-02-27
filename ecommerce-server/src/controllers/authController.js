@@ -22,5 +22,4 @@ const ownerLogin = async (req, res) => {
     }
 };
 
-
 module.exports = { ownerRegister, ownerLogin };

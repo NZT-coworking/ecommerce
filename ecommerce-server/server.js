@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const validadeJwtMiddleware = require('./src/middleware/validadeJwtMiddleware');
 const ownerRouter = require('./src/routes/owner.routes');
 const userRouter = require('./src/routes/user.routes');
 require('dotenv').config();
@@ -23,7 +24,7 @@ mongoose.connect(process.env.MONGO_URL)
 
 
 app.use('/owner', ownerRouter);
-app.use('/user', userRouter);
+app.use('/user', validadeJwtMiddleware, userRouter);
 
 app.listen(port);
 
