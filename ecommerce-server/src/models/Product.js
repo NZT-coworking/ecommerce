@@ -20,6 +20,12 @@ const productSchema = new mongoose.Schema({
     status: {
         type: String,
         require: true
+    },
+    img: {
+        src: {
+            type: String,
+            required: true
+        }
     }
 })
 
