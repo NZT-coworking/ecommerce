@@ -1,12 +1,12 @@
-const jwt = require("jsonwebtoken")
+const getMessages = require("../i118/handleMessages");
 const ObjectId = require('mongodb').ObjectId;
 
 const authService = require('../services/authService');
 
 const ownerRegister = async (req, res) => {
     try {
-        const owner = authService.createOwner(req.body);
-        return res.send({ owner });
+        authService.createOwner(req.body);
+        return res.send({ message: getMessages("DEFAULT_SUCCESS_SAVE") });
     } catch (err) {
         return res.status(400).send({ error: 'Registrantion failed' });
     }
@@ -18,7 +18,7 @@ const ownerLogin = async (req, res) => {
         return res.send(loginResponse);
     }
     catch (err) {
-        return res.status(400).send({ error: err })
+        return res.status(400).send({ error: err });
     }
 };
 
