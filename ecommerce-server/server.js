@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const ownerRouter = require('./src/routes/owner.routes');
 const productRouter = require('./src/routes/product.routes');
+const path = require('path')
 
 require('dotenv').config();
 
@@ -14,7 +15,7 @@ app.use(
 );
 app.use(express.json());
 
-mongoose.set('strictQuery', true)
+mongoose.set('strictQuery', true);
 mongoose.connect(process.env.MONGO_URL)
     .then(() => {
         console.log(`success conection with mongoDB, init: http://localhost:${port}`);
@@ -25,7 +26,10 @@ mongoose.connect(process.env.MONGO_URL)
 
 
 app.use('/owner', ownerRouter);
-app.use('/product', productRouter)
+app.use('/product', productRouter);
+app.get('/uploads/:filename', (req, res) => {
+    res.sendFile(path.join(__dirname + '/src/uploads/' + req.params.filename));
+});
 
 app.listen(port);
 

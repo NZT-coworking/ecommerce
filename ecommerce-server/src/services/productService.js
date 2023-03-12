@@ -1,5 +1,6 @@
 const getMessages = require("../i118/handleMessages");
 const Product = require("../models/Product");
+const path = require("path");
 
 const save = async (product, image) => {
     if (!product || !image) {
@@ -8,7 +9,7 @@ const save = async (product, image) => {
 
     const productToSave = new Product({
         ...product,
-        img: { src: image.path }
+        img: { src: path.basename(image.path) }
     });
 
     await productToSave.save();
@@ -17,7 +18,6 @@ const save = async (product, image) => {
 
 const getAll = async () => {
     const productList = await Product.find();
-    console.log(productList)
     return productList;
 }
 
