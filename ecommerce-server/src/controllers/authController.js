@@ -13,6 +13,7 @@ const ownerRegister = async (req, res) => {
 };
 
 const ownerLogin = async (req, res) => {
+    console.log(req.body)
     try {
         const loginResponse = await authService.login(req.body);
         return res.send(loginResponse);
@@ -22,4 +23,23 @@ const ownerLogin = async (req, res) => {
     }
 };
 
-module.exports = { ownerRegister, ownerLogin };
+const getUsers = async (req, res) => {
+    try {
+        const response = await authService.getUsers(req.headers["company"]);
+        return res.send(response);
+    } catch (err) {
+        return res.status(400).send({ error: err });
+    }
+}
+
+const deleteUser = async (req, res) => {
+    try {
+        console.log('aqui')
+        const response = await authService.deleteUser(req.headers["user"]);
+        return res.status(200).send({ success: true });
+    } catch (err) {
+        return res.status(400).send({ error: err });
+    }
+}
+
+module.exports = { ownerRegister, ownerLogin, getUsers, deleteUser };

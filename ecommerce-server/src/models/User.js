@@ -1,11 +1,24 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-const ownerSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     name: {
         type: String,
+        require: true
+    },
+    user: {
+        type: String,
         require: true,
-        unique: true
+        unique: true,
+        lowercase: true
+    },
+    cpf: {
+        type: String,
+        require: true
+    },
+    city: {
+        type: String,
+        require: true
     },
     email: {
         type: String,
@@ -25,16 +38,17 @@ const ownerSchema = new mongoose.Schema({
     },
     company: {
         type: String,
-        require: true
+        require: true,
+        unique: true
     }
 });
 
-ownerSchema.pre('save', async function (next) {
+userSchema.pre('save', async function (next) {
     const hash = await bcrypt.hash(this.password, 10);
     this.password = hash;
 
     next();
 })
 
-const Owner = mongoose.model('Owner', ownerSchema);
-module.exports = Owner;
+const User = mongoose.model('User', userSchema);
+module.exports = User;
