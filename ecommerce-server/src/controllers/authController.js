@@ -13,7 +13,6 @@ const ownerRegister = async (req, res) => {
 };
 
 const ownerLogin = async (req, res) => {
-    console.log(req.body)
     try {
         const loginResponse = await authService.login(req.body);
         return res.send(loginResponse);
@@ -34,7 +33,6 @@ const getUsers = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     try {
-        console.log('aqui')
         const response = await authService.deleteUser(req.headers["user"]);
         return res.status(200).send({ success: true });
     } catch (err) {
@@ -42,4 +40,22 @@ const deleteUser = async (req, res) => {
     }
 }
 
-module.exports = { ownerRegister, ownerLogin, getUsers, deleteUser };
+const findUser = async (req, res) => {
+    try {
+        const response = await authService.findUser(req.headers["user"]);
+        return res.send(response);
+    } catch (err) {
+        return res.status(400).send({ error: err })
+    }
+}
+
+const updateUser = async (req, res) => {
+    try {
+        const response = await authService.updateUser(req.headers["user"], req.body);
+        return res.send({ success: true });
+    } catch (err) {
+        return res.status(400).send({ error: 'Falha ao salvar' });
+    }
+}
+
+module.exports = { ownerRegister, ownerLogin, getUsers, deleteUser, findUser, updateUser };

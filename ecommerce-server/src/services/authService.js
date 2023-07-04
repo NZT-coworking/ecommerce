@@ -8,7 +8,6 @@ async function createOwner(owner) {
 }
 
 async function login({ name, password }) {
-    console.log(name, password)
     const owner = await Owner.findOne({ name });
 
     if (!owner) {
@@ -42,9 +41,40 @@ async function deleteUser(user) {
         throw new Error('Deve ser passado o usuário');
     }
 
-    console.log('delete')
     const data = await Owner.deleteOne({ name: user });
     return data;
 }
 
-module.exports = { createOwner, login, getUsers, deleteUser }
+async function findUser(user) {
+    if (!user) {
+        throw new Error('Deve ser passado o usuário');
+    }
+
+    const data = await Owner.findOne({ name: user });
+
+    if (!Object.keys(user).length) {
+        throw new Error('Usuário não encontrado');
+    }
+
+    return { email: data.email, name: data.name, role: data.role };
+}
+
+async function updateUser(userToUpdate, updatedData) {
+    if (!userToUpdate || !updatedData) {
+        throw new Error('Bad request!');
+    }
+
+    const owner = await findUser(userToUpdate);
+    const diff = {};
+
+    Object.entries(updatedData).forEach(([key, value]) => {
+        if (value !== owner[key]) {
+            diff[key] = value;
+        }
+    })
+
+    const data = await Owner.findOneAndUpdate({ name: userToUpdate }, diff, { new: true });
+    return data;
+}
+
+module.exports = { createOwner, login, getUsers, deleteUser, findUser, updateUser }
